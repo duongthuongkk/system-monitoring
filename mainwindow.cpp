@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <QGridLayout>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,14 +14,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Tạo các widget cần thiết
-    QPushButton *runButton = new QPushButton("Run Executable", this);
+    QPushButton *runButton = new QPushButton("Device Info", this);
     textEdit = new QTextEdit(this);
     textEdit->setReadOnly(true);  // Để không cho phép chỉnh sửa văn bản trong textEdit
 
     // Tạo layout và thêm các widget vào
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(runButton);
-    layout->addWidget(textEdit);
+    QGridLayout *layout = new QGridLayout();
+    layout->addWidget(runButton, 0, 0); // row, column
+    layout->addWidget(textEdit, 0, 1 ,5, 1);    // row, colum, number of row, number of column
+
+    // Adjust button size
+    runButton->setFixedSize(200,100);
+    runButton->setStyleSheet("QPushButton { font-size: 18px; color: blue }");
+
+    // Adjust font size and line spacing
+    textEdit->setStyleSheet("QTextEdit { font-family: Arial; "
+                            "font-size: 25px; "
+                            "line-height: 15.0; }");
 
     // Tạo một QWidget trung gian và đặt layout cho nó
     QWidget *centralWidget = new QWidget(this);
@@ -61,7 +71,7 @@ void MainWindow::readOutput()
 {
     // Đọc output từ file thực thi và hiển thị trong QTextEdit
     QString output = process->readAllStandardOutput();
-    textEdit->append("Output: " + output);
+    textEdit->append(output);
 }
 
 void MainWindow::readError()

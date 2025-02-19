@@ -6,13 +6,19 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-
-int count_info(char *path,char *keyword,int keylength){
+int count_info(char *typeofAttribute, char *path,char *keyword,int keylength, char *value){
     int fd;
     char buffer[256];
     ssize_t byteRead;
     off_t offset = 0;
     int count = 0;  // Khởi tạo count
+    char *colonPos; 
+    char * endPos;
+    for (int i = 0; i < sizeof(value); i++) {
+        buffer[i] = '\0';
+    }
+    
+
 
     fd = open(path, O_RDONLY);
     if (fd == -1) {
@@ -45,6 +51,17 @@ int count_info(char *path,char *keyword,int keylength){
         for (ssize_t i = 0; i < byteRead - keylength + 1; ++i) {
             if (strncmp(&buffer[i],keyword, keylength) == 0) {
                 count++;
+                if (count == 1 && strcmp(typeofAttribute,value)){       // find value of attributes
+                    colonPos= strchr(&buffer[i], *keyword);
+                    if (colonPos != NULL) {
+                        // Bỏ qua tất cả các ký tự khoảng trắng sau ":"
+                        colonPos+= keylength;  // Chuyển con trỏ đến ký tự sau ":"
+                        colonPos += strspn(colonPos, "\t: ");  // Bỏ qua tất cả các ký tự " " (dấu cách)
+                        if ((endPos = strchr(colonPos, '\n')) != NULL)
+                            endPos--;
+                            strncpy(value, colonPos, endPos - colonPos + 1);
+                    }
+                }
             }
         }
 
@@ -53,8 +70,6 @@ int count_info(char *path,char *keyword,int keylength){
     }
 
     // In kết quả
-    printf("The keyword 'processor' is discovered %d times\n", count);
-
     close(fd);
-    return 0;
+    return count;       // Return number of object info
 }

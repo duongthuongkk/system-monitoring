@@ -8,4 +8,4 @@ cpu_info: source/cpu_info.c include/cpu_info.h
 	gcc -o cpu_info.o ./source/cpu_info.c -I ./include
 
 clean:
-	rm -rf main
+	rm -rf cpu
