@@ -8,7 +8,7 @@
 
 int count_info(char *typeofAttribute, char *path,char *keyword,int keylength, char *value){
     int fd;
-    char buffer[256];
+    char buffer[1024];
     ssize_t byteRead;
     off_t offset = 0;
     int count = 0;  // Khởi tạo count
