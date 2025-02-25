@@ -1,11 +1,11 @@
 
-all: source/cpu_info.o main.o
-	gcc -o cpu source/cpu_info.o main.o
+all: source/device_info.o main.o
+	gcc -o device_info source/device_info.o main.o
 
-main: main.c include/cpu_info.h
+main: main.c include/device_info.h
 	gcc -o main.o main.c -I ./include
-cpu_info: source/cpu_info.c include/cpu_info.h
-	gcc -o cpu_info.o ./source/cpu_info.c -I ./include
+cpu_info: source/device_info.c include/device_info.h
+	gcc -o device_info.o ./source/device_info.c -I ./include
 
 clean:
-	rm -rf cpu
+	rm -rf cpu main.o source/device_info.o

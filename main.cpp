@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -8,5 +7,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     w.setWindowTitle("System Monitoring");
+    // Tạo đối tượng QProcess để chạy file thực thi
     return a.exec();
 }
